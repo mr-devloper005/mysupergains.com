@@ -32,11 +32,12 @@ const variantShells = {
   'image-masonry': 'bg-[linear-gradient(180deg,#09101d_0%,#111c2f_100%)] text-white',
   'image-portfolio': 'bg-[linear-gradient(180deg,#07111f_0%,#13203a_100%)] text-white',
   'profile-creator': 'bg-[linear-gradient(180deg,#0a1120_0%,#101c34_100%)] text-white',
-  'profile-business': 'bg-[linear-gradient(180deg,#f6fbff_0%,#ffffff_100%)]',
+  'profile-business': 'bg-[linear-gradient(180deg,#fffdf9_0%,#f7f1ea_45%,#ffffff_100%)]',
   'classified-bulletin': 'bg-[linear-gradient(180deg,#edf3e4_0%,#ffffff_100%)]',
   'classified-market': 'bg-[linear-gradient(180deg,#f4f6ef_0%,#ffffff_100%)]',
   'sbm-curation': 'bg-[linear-gradient(180deg,#fff7ee_0%,#ffffff_100%)]',
-  'sbm-library': 'bg-[linear-gradient(180deg,#f7f8fc_0%,#ffffff_100%)]',
+  'sbm-library': 'bg-[linear-gradient(180deg,#fff8f0_0%,#f7f1ea_40%,#ffffff_100%)]',
+  'comment-editorial': 'bg-[linear-gradient(180deg,#fffdf9_0%,#f7f1ea_55%,#faf8f5_100%)]',
 } as const
 
 export async function TaskListPage({ task, category }: { task: TaskKey; category?: string }) {
@@ -69,7 +70,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         input: 'border-white/10 bg-white/6 text-white',
         button: 'bg-white text-slate-950 hover:bg-slate-200',
       }
-    : layoutKey.startsWith('article') || layoutKey.startsWith('sbm')
+    : layoutKey.startsWith('article') || layoutKey.startsWith('sbm') || task === 'comment'
       ? {
           muted: 'text-[#72594a]',
           panel: 'border border-[#dbc6b6] bg-white/90',
@@ -118,6 +119,52 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
               hasPart: schemaItems,
             }}
           />
+        ) : null}
+
+        {task === 'comment' ? (
+          <section className="mb-12 grid gap-8 lg:grid-cols-[1.12fr_0.88fr] lg:items-start">
+            <div>
+              <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] ${ui.soft}`}>
+                <Icon className="h-3.5 w-3.5" />
+                {taskConfig?.label || 'Blog'}
+              </span>
+              <h1 className="mt-5 max-w-4xl text-4xl font-semibold tracking-[-0.05em] text-foreground sm:text-5xl">
+                Field notes, product essays, and curator stories—published with room to breathe.
+              </h1>
+              <p className={`mt-6 max-w-2xl text-sm leading-8 ${ui.muted}`}>
+                This is our slower lane: longer headlines, softer backgrounds, and typography that mirrors the cream-toned shell you see across the site. Use
+                the category filter to jump between updates without losing the editorial rhythm.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link href="/sbm" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${ui.button}`}>
+                  Browse collections
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href="/contact" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${ui.soft}`}>
+                  Pitch a story
+                </Link>
+              </div>
+            </div>
+            <div className={`rounded-[2rem] p-6 sm:p-7 ${ui.panel}`}>
+              <p className={`text-xs font-semibold uppercase tracking-[0.24em] ${ui.muted}`}>Topics</p>
+              <p className={`mt-4 text-sm leading-7 ${ui.muted}`}>
+                Filters stay lightweight so reading stays central. Pick a category to narrow posts while keeping the same calm layout.
+              </p>
+              <form className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center" action={taskConfig?.route || '#'}>
+                <select name="category" defaultValue={normalizedCategory} className={`h-11 w-full flex-1 rounded-xl px-3 text-sm ${ui.input}`}>
+                  <option value="all">All categories</option>
+                  {CATEGORY_OPTIONS.map((item) => (
+                    <option key={item.slug} value={item.slug}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+                <button type="submit" className={`h-11 rounded-xl px-5 text-sm font-medium whitespace-nowrap ${ui.button}`}>
+                  Apply
+                </button>
+              </form>
+            </div>
+          </section>
         ) : null}
 
         {layoutKey === 'listing-directory' || layoutKey === 'listing-showcase' ? (
@@ -192,8 +239,11 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
               <div className={`min-h-[240px] rounded-[2rem] ${ui.soft}`} />
               <div>
                 <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
-                <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Profiles with stronger identity, trust, and reputation cues.</h1>
-                <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>This layout prioritizes the person or business surface first, then lets the feed continue below without borrowing the same visual logic used by articles or listings.</p>
+                <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Profiles that feel personal, legible, and ready to be discovered.</h1>
+                <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>
+                  Every card highlights who someone is, what they stand for, and how to take the next step—whether that is booking, following, or saving their
+                  work alongside your bookmarks.
+                </p>
               </div>
             </div>
           </section>
@@ -219,8 +269,11 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           <section className="mb-12 grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
             <div>
               <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
-              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Curated resources arranged more like collections than a generic post feed.</h1>
-              <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>Bookmarks, saved resources, and reference-style items need calmer grouping and lighter metadata. This variant gives them that separation.</p>
+              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Social bookmarking that reads like a curated shelf—not a noisy timeline.</h1>
+              <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>
+                Save references, cluster them by intent, and share shelves with teammates who need the same context. Lighter metadata keeps focus on the link,
+                the note, and why it mattered enough to keep.
+              </p>
             </div>
             <div className={`rounded-[2rem] p-6 ${ui.panel}`}>
               <p className={`text-xs uppercase tracking-[0.24em] ${ui.muted}`}>Collection filter</p>
