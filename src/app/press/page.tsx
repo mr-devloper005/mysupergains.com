@@ -100,7 +100,6 @@ export default function PressPage() {
               <CardContent className="p-6">
                 <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{item.outlet}</div>
                 <p className="mt-3 text-base font-medium leading-snug text-foreground">{item.headline}</p>
-                <p className="mt-2 text-xs text-muted-foreground">{item.date}</p>
               </CardContent>
             </Card>
           ))}

@@ -19,11 +19,13 @@ const taskIcons: Record<TaskKey, any> = {
 }
 
 const footerLinks = {
-  platform: SITE_CONFIG.tasks.filter((task) => task.enabled).map((task) => ({
-    name: task.label,
-    href: task.route,
-    icon: taskIcons[task.key] || LayoutGrid,
-  })),
+  platform: SITE_CONFIG.tasks
+    .filter((task) => task.enabled && task.key !== 'profile')
+    .map((task) => ({
+      name: task.label,
+      href: task.route,
+      icon: taskIcons[task.key] || LayoutGrid,
+    })),
   company: [
     { name: 'About', href: '/about' },
     { name: 'Team', href: '/team' },

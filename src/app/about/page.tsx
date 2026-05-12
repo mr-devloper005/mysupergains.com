@@ -48,17 +48,9 @@ export default function AboutPage() {
       title={`The story behind ${SITE_CONFIG.name}`}
       description={`We exist to make discovery feel human again: warm surfaces, honest metadata, and tools that help you grow without burning out. ${SITE_CONFIG.name} is where bookmarking, profiles, and publishing meet in one thoughtful place.`}
       actions={
-        <>
-          <Button asChild className="rounded-full px-6">
-            <Link href="/team" className="inline-flex items-center gap-2">
-              Meet the team
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
-          <Button variant="outline" asChild className="rounded-full border-border px-6">
-            <Link href="/contact">Talk to us</Link>
-          </Button>
-        </>
+        <Button variant="outline" asChild className="rounded-full border-border px-6">
+          <Link href="/contact">Talk to us</Link>
+        </Button>
       }
     >
       <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
@@ -128,9 +120,8 @@ export default function AboutPage() {
         </div>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {milestones.map((m) => (
-            <div key={m.year} className="rounded-2xl border border-border/80 bg-card/90 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#0072BC]">{m.year}</p>
-              <p className="mt-2 font-semibold text-foreground">{m.label}</p>
+            <div key={m.label} className="rounded-2xl border border-border/80 bg-card/90 p-5">
+              <p className="font-semibold text-foreground">{m.label}</p>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{m.detail}</p>
             </div>
           ))}
